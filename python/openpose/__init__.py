@@ -1,1 +1,1 @@
-from openpose import *
+from .openpose import *
