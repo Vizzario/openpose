@@ -27,8 +27,7 @@ namespace op
             mIsRunning = false;
         }
 
-        // Virtual in case some function needs spetial stopping (e.g., buffers might not stop inmediately and need a
-        // few iterations)
+        // Virtual in case some function needs spetial stopping (e.g. buffers might not stop inmediately and need a few iterations)
         inline virtual void tryStop()
         {
             stop();

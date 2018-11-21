@@ -112,9 +112,8 @@ namespace op
                     }
                 }
             }
-            // If index 0 --> Assign number of peaks (truncated to the maximum possible number of peaks)
             else
-                output[0] = (kernelPtr[globalIdx] < maxPeaks ? kernelPtr[globalIdx] : maxPeaks);
+                output[0] = kernelPtr[globalIdx]; //number of peaks
         }
     }
 
@@ -244,10 +243,10 @@ namespace op
         }
     }
 
-    template void nmsGpu(
-        float* targetPtr, int* kernelPtr, const float* const sourcePtr, const float threshold,
-        const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize, const Point<float>& offset);
-    template void nmsGpu(
-        double* targetPtr, int* kernelPtr, const double* const sourcePtr, const double threshold,
-        const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize, const Point<double>& offset);
+    template void nmsGpu(float* targetPtr, int* kernelPtr, const float* const sourcePtr, const float threshold,
+                         const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize,
+                         const Point<float>& offset);
+    template void nmsGpu(double* targetPtr, int* kernelPtr, const double* const sourcePtr, const double threshold,
+                         const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize,
+                         const Point<double>& offset);
 }

@@ -1,7 +1,6 @@
 #ifndef OPENPOSE_WRAPPER_WRAPPER_STRUCT_INPUT_HPP
 #define OPENPOSE_WRAPPER_WRAPPER_STRUCT_INPUT_HPP
 
-#include <limits> // std::numeric_limits
 #include <openpose/core/common.hpp>
 #include <openpose/producer/producer.hpp>
 
@@ -14,34 +13,20 @@ namespace op
     struct OP_API WrapperStructInput
     {
         /**
-         * Desired type of producer (FlirCamera, ImageDirectory, IPCamera, Video, Webcam, None, etc.).
-         * Default: ProducerType::None.
+         * Producer which will generate the frames.
+         * Set to nullptr to disable the whole input, i.e. if the user is going to use his own frames generator.
          */
-        ProducerType producerType;
+        std::shared_ptr<Producer> producerSharedPtr;
 
         /**
-         * Path of the producer (image directory path for ImageDirectory, video path for Video,
-         * camera index for Webcam and FlirCamera, URL for IPCamera, etc.).
-         * Default: "".
-         */
-        std::string producerString;
-
-        /**
-         * First image to process.
+         * First image to obtain.
          * Default: 0.
          */
         unsigned long long frameFirst;
 
         /**
-         * Step or gap across processed frames.
-         * Default: 1 (i.e., process all frames).
-         * Example: A value of 5 would mean to process frames 0, 5, 10, etc.
-         */
-        unsigned long long frameStep;
-
-        /**
-         * Last image to process.
-         * Default: -1 (i.e., process all frames).
+         * Last image to obtain.
+         * Default: -1 (i.e. obtain all frames).
          */
         unsigned long long frameLast;
 
@@ -62,49 +47,19 @@ namespace op
         int frameRotate;
 
         /**
-         * Whether to re-open the producer if it reaches the end (e.g., video or image directory after the last frame).
+         * Whether to re-open the producer if it reaches the end (e.g. video or image directory after the last frame).
          */
         bool framesRepeat;
-
-        /**
-         * Camera resolution (only for Webcam and FlirCamera).
-         */
-        Point<int> cameraResolution;
-
-        /**
-         * Frame rate of the camera (only for some producers).
-         */
-        double webcamFps;
-
-        /**
-         * Directory path for the camera parameters (intrinsic and extrinsic parameters).
-         */
-        std::string cameraParameterPath;
-
-        /**
-         * Whether to undistort the image given the camera parameters.
-         */
-        bool undistortImage;
-
-        /**
-         * Number of camera views recorded (only for prerecorded produced sources, such as video and image directory).
-         */
-        unsigned int imageDirectoryStereo;
 
         /**
          * Constructor of the struct.
          * It has the recommended and default values we recommend for each element of the struct.
          * Since all the elements of the struct are public, they can also be manually filled.
          */
-        WrapperStructInput(const ProducerType producerType = ProducerType::None,
-                           const std::string& producerString = "", const unsigned long long frameFirst = 0,
-                           const unsigned long long frameStep = 1,
-                           const unsigned long long frameLast = std::numeric_limits<unsigned long long>::max(),
+        WrapperStructInput(const std::shared_ptr<Producer> producerSharedPtr = nullptr,
+                           const unsigned long long frameFirst = 0, const unsigned long long frameLast = -1,
                            const bool realTimeProcessing = false, const bool frameFlip = false,
-                           const int frameRotate = 0, const bool framesRepeat = false,
-                           const Point<int>& cameraResolution = Point<int>{-1,-1}, const double webcamFps = 30.,
-                           const std::string& cameraParameterPath = "models/cameraParameters/",
-                           const bool undistortImage = true, const unsigned int imageDirectoryStereo = 1);
+                           const int frameRotate = 0, const bool framesRepeat = false);
     };
 }
 

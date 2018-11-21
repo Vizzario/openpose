@@ -4,13 +4,20 @@
 #include <openpose/core/common.hpp>
 #include <openpose/pose/enumClasses.hpp>
 
+// PIMPL does not work here. Alternative:
+// stackoverflow.com/questions/13978775/how-to-avoid-include-dependency-to-external-library?answertab=active#tab-top
+namespace caffe
+{
+    template <typename T> class Blob;
+}
+
 namespace op
 {
     // It mostly follows the Caffe::layer implementation, so Caffe users can easily use it. However, in order to keep
     // the compatibility with any generic Caffe version, we keep this 'layer' inside our library rather than in the
     // Caffe code.
     template <typename T>
-    class BodyPartConnectorCaffe
+    class OP_API BodyPartConnectorCaffe
     {
     public:
         explicit BodyPartConnectorCaffe();
@@ -32,9 +39,6 @@ namespace op
         void setMinSubsetScore(const T minSubsetScore);
 
         void setScaleNetToOutput(const T scaleNetToOutput);
-
-        virtual void Forward(const std::vector<caffe::Blob<T>*>& bottom, Array<T>& poseKeypoints,
-                             Array<T>& poseScores);
 
         virtual void Forward_cpu(const std::vector<caffe::Blob<T>*>& bottom, Array<T>& poseKeypoints,
                                  Array<T>& poseScores);

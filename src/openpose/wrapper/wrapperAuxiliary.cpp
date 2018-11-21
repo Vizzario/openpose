@@ -12,7 +12,6 @@ namespace op
                                       const WrapperStructOutput& wrapperStructOutput,
                                       const bool renderOutput,
                                       const bool userOutputWsEmpty,
-                                      const std::shared_ptr<Producer>& producerSharedPtr,
                                       const ThreadManagerMode threadManagerMode)
     {
         try
@@ -45,9 +44,9 @@ namespace op
                         wrapperStructOutput.writeHeatMapsFormat != "float"))
             {
                 const auto message = "In order to save the heatmaps, you must either set"
-                                     " wrapperStructPose.heatMapScale to ScaleMode::UnsignedChar (i.e., range"
-                                     " [0, 255]) or `--write_heatmaps_format` to `float` to storage floating numbers"
-                                     " in binary mode.";
+                                     " wrapperStructPose.heatMapScale to ScaleMode::UnsignedChar (i.e. range [0, 255])"
+                                     " or `--write_heatmaps_format` to `float` to storage floating numbers in binary"
+                                     " mode.";
                 error(message, __LINE__, __FUNCTION__, __FILE__);
             }
             if (userOutputWsEmpty && threadManagerMode != ThreadManagerMode::Asynchronous
@@ -91,7 +90,7 @@ namespace op
                 // Warnings
                 if (guiEnabled && wrapperStructOutput.guiVerbose && !renderOutput)
                 {
-                    const auto message = "No render is enabled (e.g., `--render_pose 0`), so you might also want to"
+                    const auto message = "No render is enabled (e.g. `--render_pose 0`), so you might also want to"
                                          " remove the display (set `--display 0` or `--no_gui_verbose`). If you"
                                          " simply want to use OpenPose to record video/images without keypoints, you"
                                          " only need to set `--num_gpu 0`." + additionalMessage;
@@ -105,9 +104,9 @@ namespace op
                     log(message, Priority::High);
                 }
             }
-            if (!wrapperStructOutput.writeVideo.empty() && producerSharedPtr == nullptr)
+            if (!wrapperStructOutput.writeVideo.empty() && wrapperStructInput.producerSharedPtr == nullptr)
                 error("Writting video is only available if the OpenPose producer is used (i.e."
-                      " producerSharedPtr cannot be a nullptr).",
+                      " wrapperStructInput.producerSharedPtr cannot be a nullptr).",
                       __LINE__, __FUNCTION__, __FILE__);
             if (!wrapperStructPose.enable)
             {
@@ -137,7 +136,7 @@ namespace op
                       + std::to_string(wrapperStructPose.outputSize.y) + ").",
                       __LINE__, __FUNCTION__, __FILE__);
             if (wrapperStructOutput.writeVideoFps <= 0
-                && producerSharedPtr->get(CV_CAP_PROP_FPS) > 0)
+                && wrapperStructInput.producerSharedPtr->get(CV_CAP_PROP_FPS) > 0)
                 error("Set `--camera_fps` for this producer, as its frame rate is unknown.",
                       __LINE__, __FUNCTION__, __FILE__);
             #ifdef USE_CPU_ONLY
@@ -148,8 +147,8 @@ namespace op
             // Net input resolution cannot be reshaped for Caffe OpenCL and MKL versions, only for CUDA version
             #if defined USE_MKL || defined USE_OPENCL
                 // If image_dir and netInputSize == -1 --> error
-                if ((producerSharedPtr == nullptr
-                     || producerSharedPtr->getType() == ProducerType::ImageDirectory)
+                if ((wrapperStructInput.producerSharedPtr == nullptr
+                     || wrapperStructInput.producerSharedPtr->getType() == ProducerType::ImageDirectory)
                     // If netInputSize is -1
                     && (wrapperStructPose.netInputSize.x == -1 || wrapperStructPose.netInputSize.y == -1))
                 {

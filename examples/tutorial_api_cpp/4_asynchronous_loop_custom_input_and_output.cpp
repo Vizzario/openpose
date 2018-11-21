@@ -12,7 +12,7 @@
     // 1. `core` module:
         // For the Array<float> class that the `pose` module needs
         // For the Datum struct that the `thread` module sends between the queues
-    // 2. `utilities` module: for the error & logging functions, i.e., op::error & op::log respectively
+    // 2. `utilities` module: for the error & logging functions, i.e. op::error & op::log respectively
 // This file should only be used for the user to take specific examples.
 
 // Command-line user intraface
@@ -248,9 +248,9 @@ int tutorialApiCpp4()
         const op::WrapperStructOutput wrapperStructOutput{
             displayMode, guiVerbose, fullScreen, FLAGS_write_keypoint,
             op::stringToDataFormat(FLAGS_write_keypoint_format), FLAGS_write_json, FLAGS_write_coco_json,
-            FLAGS_write_coco_foot_json, FLAGS_write_coco_json_variant, FLAGS_write_images, FLAGS_write_images_format,
-            FLAGS_write_video, FLAGS_camera_fps, FLAGS_write_heatmaps, FLAGS_write_heatmaps_format,
-            FLAGS_write_video_adam, FLAGS_write_bvh, FLAGS_udp_host, FLAGS_udp_port};
+            FLAGS_write_coco_foot_json, FLAGS_write_images, FLAGS_write_images_format, FLAGS_write_video,
+            FLAGS_camera_fps, FLAGS_write_heatmaps, FLAGS_write_heatmaps_format, FLAGS_write_video_adam,
+            FLAGS_write_bvh, FLAGS_udp_host, FLAGS_udp_port};
         opWrapperT.configure(wrapperStructOutput);
         // Set to single-thread (for sequential processing and/or debugging and/or reducing latency)
         if (FLAGS_disable_multi_thread)

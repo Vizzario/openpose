@@ -158,9 +158,10 @@ namespace op
                                 currentPeakCount++;
                             }
                         }
+
                     }
                 }
-                currTargetPtr[0] = T(currentPeakCount-1);
+                currTargetPtr[0] = currentPeakCount-1;
             }
         }
         catch (const std::exception& e)
@@ -169,10 +170,10 @@ namespace op
         }
     }
 
-    template OP_API void nmsCpu(
-        float* targetPtr, int* kernelPtr, const float* const sourcePtr, const float threshold,
-        const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize, const Point<float>& offset);
-    template OP_API void nmsCpu(
-        double* targetPtr, int* kernelPtr, const double* const sourcePtr, const double threshold,
-        const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize, const Point<double>& offset);
+    template void nmsCpu(float* targetPtr, int* kernelPtr, const float* const sourcePtr, const float threshold,
+                         const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize,
+                         const Point<float>& offset);
+    template void nmsCpu(double* targetPtr, int* kernelPtr, const double* const sourcePtr, const double threshold,
+                         const std::array<int, 4>& targetSize, const std::array<int, 4>& sourceSize,
+                         const Point<double>& offset);
 }
